@@ -1,13 +1,15 @@
 package org.openqa.selenium.lift;
 
-import static org.openqa.selenium.lift.Finders.*;
-import static org.openqa.selenium.lift.Matchers.*;
-
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.openqa.selenium.lift.Finders.link;
+import static org.openqa.selenium.lift.Finders.links;
+import static org.openqa.selenium.lift.Finders.title;
+import static org.openqa.selenium.lift.Matchers.atLeast;
+import static org.openqa.selenium.lift.Matchers.text;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 public class GoogleTest extends HamcrestWebDriverTestCase {
 
