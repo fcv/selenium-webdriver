@@ -35,7 +35,6 @@ class GoogleInitialPage extends FixtureFunSuite with ShouldMatchers {
             elm !
         }        
         
-        exception.getMessage should include ("name-not-found")
-        exception.getMessage should not include ("test")
+        exception.getMessage should (include ("name-not-found") and not include ("teste"))
     }
 }
