@@ -7,9 +7,13 @@ class RichWebDriver(driver: WebDriver) {
     
     def tryFindElement(by: By) = RichWebDriver tryFindElement (driver, by)
     
-    def \\ (by: By) = driver findElement by
-    
-    def ?\ (by: By) = RichWebDriver tryFindElement (driver, by)
+    def \ (by: By) = {
+        try {
+            Full( Nil, driver findElement by )
+        } catch {
+            case e: NoSuchHtmlElementException => Empty(Nil, by)
+        }
+    }
 
 }
 
