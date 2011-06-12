@@ -13,18 +13,7 @@ import scala.util.control.Breaks._
 import support.RichWebDriver.conversions._
 
 @RunWith(classOf[JUnitRunner])
-class GoogleInitialPage extends FixtureFunSuite with ShouldMatchers {
-
-    type FixtureParam = WebDriver
-    
-    def withFixture(test: OneArgTest) {
-        val webdriver: WebDriver = new FirefoxDriver();
-        try {
-        	test(webdriver)
-        } finally {
-            webdriver.quit
-        }
-    }
+class GoogleInitialPage extends WebDriverFixtureFunSuite with ShouldMatchers {
     
     test("testing") { driver =>
         driver get "http://www.google.com.br"
