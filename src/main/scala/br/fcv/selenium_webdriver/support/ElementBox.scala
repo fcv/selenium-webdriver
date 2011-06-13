@@ -26,6 +26,11 @@ sealed abstract class ElementBox(path: List[WebElement]) {
     }
     
     def \\ (by: By): List[WebElement] = if (isEmpty) Nil else List(get findElements by: _*)
+    
+    def foreach[U](f: WebElement => U) = if (!isEmpty) f(get)
+    
+    def getOrElse[B >: WebElement](default: => B) = if (isEmpty) default else get     
+    
 }
 
 final case class Empty(path: List[WebElement], by: By) extends ElementBox(path) {

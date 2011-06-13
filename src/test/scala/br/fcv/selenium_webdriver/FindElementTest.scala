@@ -37,5 +37,22 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         exception.getMessage should (include ("name-not-found") and not include ("teste"))
     }
     
+    test("testing foreach on empty") { driver =>
+        driver get (localPageUrl)
+        
+        val box = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found")
+        box foreach { elm => fail("empty box should not excecute foreach") }        
+    }
     
+    test("testing for on empty") { driver =>
+        driver get (localPageUrl)
+        
+        val box = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found")
+        
+        for (elm: WebElement <- box) {
+        	fail("empty box should not excecute for") 
+        }
+        
+    }
+        
 }
