@@ -41,7 +41,7 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         driver get (localPageUrl)
         
         val box = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found")
-        box foreach { elm => fail("empty box should not excecute foreach") }        
+        box foreach { elm:WebElement => fail("empty box should not excecute foreach") }        
     }
     
     test("testing for on empty") { driver =>
