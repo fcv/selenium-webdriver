@@ -8,7 +8,7 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
-class GoogleInitialPageTest extends WebDriverFixtureFunSuite with ShouldMatchers {
+class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
     private def localPageUrl = getClass.getResource("/test-page.html").toString
     
