@@ -36,11 +36,11 @@ final case class Empty(path: List[WebElement], by: By) extends ElementBox(path) 
         val builder = StringBuilder.newBuilder += '<' ++= elm.getTagName;        
         List("id", "name") foreach { attName => 
         	val att = elm.getAttribute(attName)
-	        if (att != null) {
-	            builder += ' ' ++= attName += '\"' ++= att += '\"'
+	        if (att != null && att.length > 0 ) {
+	            builder += ' ' ++= attName ++= "=\"" ++= att += '\"'
 	        }
         }
-        builder ++= " .. />"
+        builder ++= " .. >"
         builder.toString   
     }
 }
