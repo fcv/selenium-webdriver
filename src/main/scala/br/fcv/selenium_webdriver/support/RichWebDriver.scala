@@ -3,29 +3,13 @@ package br.fcv.selenium_webdriver.support
 import org.openqa.selenium.{By, WebDriver}
 import org.openqa.selenium.{NoSuchElementException => NoSuchHtmlElementException}
 
-class RichWebDriver(driver: WebDriver) {    
+class RichWebDriver(driver: WebDriver) extends RichSearchContext(driver)  {   
     
-    def tryFindElement(by: By) = RichWebDriver tryFindElement (driver, by)
-    
-    def \ (by: By) = {
-        try {
-            Full( Nil, driver findElement by )
-        } catch {
-            case e: NoSuchHtmlElementException => Empty(Nil, by)
-        }
-    }
+   override val root = Nil
 
 }
 
-object RichWebDriver {
-    
-    def tryFindElement(driver: WebDriver, by: By) = {
-    	try {
-    		Some(driver findElement by)
-    	} catch {
-    	    case e: NoSuchHtmlElementException => None
-    	}
-    }
+object RichWebDriver {  
     
     object conversions {        
         implicit def enrichWebDriver(driver: WebDriver) = new RichWebDriver(driver);        
