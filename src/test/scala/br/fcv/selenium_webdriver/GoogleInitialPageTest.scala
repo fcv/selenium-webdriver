@@ -2,7 +2,7 @@ package br.fcv.selenium_webdriver
 
 import br.fcv.selenium_webdriver.support.implicits._
 import org.junit.runner.RunWith
-import org.openqa.selenium.By.{id, name}
+import org.openqa.selenium.By.{id, name, tagName}
 import org.openqa.selenium.{NoSuchElementException => NoSuchWebElementException, WebDriver, WebElement}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
@@ -10,10 +10,12 @@ import org.scalatest.matchers.ShouldMatchers
 @RunWith(classOf[JUnitRunner])
 class GoogleInitialPageTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
+    private def localPageUrl = getClass.getResource("/test-page.html").toString
+    
     test("testing exception message seaching on webdriver") { driver =>
-        driver get "http://www.google.com.br"
+        driver get localPageUrl
         
-        val elm = driver \ id("main") \ id("body") \ id("lga") \ name("name-not-found") \ name("test")
+        val elm = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found") \ name("test")
         
         val exception = intercept[NoSuchWebElementException] {
             elm !
@@ -23,10 +25,10 @@ class GoogleInitialPageTest extends WebDriverFixtureFunSuite with ShouldMatchers
     }
     
     test("testing exception message seaching on webelement") { driver =>
-        driver get "http://www.google.com.br"
+        driver get (localPageUrl)
         
-        val body: WebElement = driver \ id("main") \ id("body") !        
-        val teste = body \ id("lga") \ name("name-not-found") \ name("teste")
+        val main: WebElement = driver \ tagName("body") \ id("main") !        
+        val teste = main \ name("content") \ name("name-not-found") \ name("teste")
         
         val exception = intercept[NoSuchWebElementException] {
             teste !
