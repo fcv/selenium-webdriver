@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Js Prompt Test Page</title>
+	<script type="text/javascript">
+		(function() {
+			window.testJsPrompt = function() {
+				var value = prompt('Please, set a value to input text');
+				var i = document.getElementById('my-input');
+				i.value = value;
+			}
+		})()
+	</script>
+</head>
+<body>
+	<h1>Js Prompt Test Page</h1>
+	
+	<div id="body" class="div-class-body">
+		<input id="my-input" type="text"/>
+		<div title="my-title" class="div-class" ></div>
+	</div>	
+</body>
+</html>
