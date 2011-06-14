@@ -29,8 +29,7 @@ class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         
         val ul = driver.waitUntil(2000) { d => d \ id("my-ul") ! }
         
-        
-        val lis = ul findElements By.tagName("li")
+        val lis = ul *\ tagName("li")
         lis.size should be === 10
     }
     
