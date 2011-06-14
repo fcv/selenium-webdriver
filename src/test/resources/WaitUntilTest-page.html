@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Wait Until Test Page</title>	
+	<script type="text/javascript">
+		(function() {
+			var timeout = 1000;
+			window.onButtonClicked = function() {
+				var target = document.getElementById('target');
+				while (target.hasChildNodes()) {
+					target.removeChild(target.firstChild)
+				}
+				
+				window.setTimeout(function() {					
+					var ul = document.createElement('ul');
+					ul.setAttribute('id', 'my-ul');
+					
+					for (var i = 0; i < 10; i++) {
+						var li = document.createElement('li');
+						li.appendChild( document.createTextNode('item ' + i) );
+						ul.appendChild(li);
+					}
+					
+					target.appendChild(ul);
+				}, timeout);
+			}
+			
+			window.setTimeToWait = function(newTimeout) {
+				timeout = newTimeout;
+			}
+		})()
+	</script>
+</head>
+<body>
+	<h1>Wait Until Test Page</h1>
+	
+	<div id="body" class="div-class-body">
+		<button type="button" id="button" onclick="onButtonClicked()">Button</button>		
+	</div>	
+	<div id="target">
+	</div>
+</body>
+</html>
