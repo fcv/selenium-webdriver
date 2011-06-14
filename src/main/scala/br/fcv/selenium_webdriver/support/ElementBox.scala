@@ -39,7 +39,7 @@ sealed abstract class ElementBox(path: List[WebElement]) {
     
 }
 
-final case class Empty(path: List[WebElement], by: By) extends ElementBox(path) {
+final class Empty(path: List[WebElement], by: By) extends ElementBox(path) {
     def get = throw new NoSuchWebElementException( (path map printWebElement).mkString("\\") + " \\ " + by )
     val isEmpty = true
     
@@ -56,7 +56,17 @@ final case class Empty(path: List[WebElement], by: By) extends ElementBox(path) 
     }
 }
 
-final case class Full(path: List[WebElement], current: WebElement) extends ElementBox(path :+ current) {
+object Empty {    
+    def apply(path: List[WebElement], by: By) = new Empty(path, by)
+    def unapply(e: Empty) = true
+}
+
+final class Full(path: List[WebElement], current: WebElement) extends ElementBox(path :+ current) {
     def get = current
     val isEmpty = false
+}
+
+object Full {
+    def apply(path: List[WebElement], current: WebElement) = new Full(path, current)
+    def unapply(f: Full) = true
 }

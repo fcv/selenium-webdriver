@@ -66,38 +66,38 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         val box = driver \ id("body")
         
         (for (e <- box if e.getAttribute("class") == "div-class-body") yield e) match {
-            case Empty(_, _) => fail("filter was expected to result in something")
+            case Empty() => fail("filter was expected to result in something")
             case _ => 
         }
           
         (for (e <- box if e.getAttribute("class") == "div-class-body-wrong") yield e) match {
-            case Full(_, _) => fail("filter was expected to result in empty result")
+            case Full() => fail("filter was expected to result in empty result")
             case _ => 
         }
         
         (for (e <- box 
                 if e.getAttribute("class") == "div-class-body";
         			f <- e \ name("content")) yield f) match {
-            case Empty(_, _) => fail("filter was expected to result in something")
+            case Empty() => fail("filter was expected to result in something")
             case _ =>
         }
         
         (for (e <- box 
                 if e.getAttribute("class") == "div-class-body";
         			f <- e \ By.className("div-class")) yield f) match {
-            case Empty(_, _) => fail("filter was expected to result in something")
+            case Empty() => fail("filter was expected to result in something")
             case _ =>
         }
         
         (for (e <- box if e.getAttribute("class") == "div-class-body";
         			f <- e \ By.className("div-class") if f.getAttribute("title") == "my-title") yield f) match {
-            case Empty(_, _) => fail("filter was expected to result in something")
+            case Empty() => fail("filter was expected to result in something")
             case _ =>
         }
         
         (for (e <- box if e.getAttribute("class") == "div-class-body";
         			f <- e \ By.className("div-class") if f.getAttribute("title") == "my_title") yield f) match {
-            case Full(_, _) => fail("filter was expected to result in nothing")
+            case Full() => fail("filter was expected to result in nothing")
             case _ =>
         }
     }
