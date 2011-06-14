@@ -34,6 +34,8 @@ class JsPromptTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         alert.sendKeys(content)
         alert.accept
         
+        //-- note that input has been reached before its value is changed
+        // but value attribute is refreshed
         input.getAttribute("value") should be === content 
     }
 
