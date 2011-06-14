@@ -13,11 +13,9 @@ import org.openqa.selenium.By
 @RunWith(classOf[JUnitRunner])
 class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
-    override def createWebDriver = new HtmlUnitDriver    
-    private def localPageUrl = getClass.getResource("/FindElementTest-page.html").toString
+    override def createWebDriver = new HtmlUnitDriver
     
     test("testing exception message seaching on webdriver") { driver =>
-        driver get localPageUrl
         
         val elm = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found") \ name("test")
         
@@ -29,7 +27,6 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     }
     
     test("testing exception message seaching on webelement") { driver =>
-        driver get (localPageUrl)
         
         val main: WebElement = driver \ tagName("body") \ id("main") !        
         val teste = main \ name("content") \ name("name-not-found") \ name("teste")
@@ -42,16 +39,13 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     }
     
     test("testing foreach on empty") { driver =>
-        driver get (localPageUrl)
         
         val box = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found")
         box foreach { elm:WebElement => fail("empty box should not excecute foreach") }        
     }
     
     test("testing for on empty") { driver =>
-        
-        driver get (localPageUrl)
-        
+    
         val box = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found")
         
         for (elm: WebElement <- box) {
@@ -61,7 +55,6 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     }
     
     test("test filter map and flatMap methods") { driver =>
-        driver get (localPageUrl)
         
         val box = driver \ id("body")
         

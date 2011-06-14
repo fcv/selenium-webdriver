@@ -11,12 +11,8 @@ import br.fcv.selenium_webdriver.support.implicits._
 @RunWith(classOf[JUnitRunner])
 class JsPromptTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
-    private def localPageUrl = getClass.getResource("/JsPromptTest-page.html").toString
-    
     test("send value and retrieve it") { driver =>
-        
-        driver get localPageUrl
-        
+    
         var input = driver \ id("my-input") !
         
         val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
