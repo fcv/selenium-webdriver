@@ -14,7 +14,7 @@ import org.openqa.selenium.By
 class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
     override def createWebDriver = new HtmlUnitDriver    
-    private def localPageUrl = getClass.getResource("/test-page.html").toString
+    private def localPageUrl = getClass.getResource("/FindElementTest-page.html").toString
     
     test("testing exception message seaching on webdriver") { driver =>
         driver get localPageUrl
