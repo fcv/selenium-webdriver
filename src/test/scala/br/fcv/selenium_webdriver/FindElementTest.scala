@@ -1,15 +1,19 @@
 package br.fcv.selenium_webdriver
 
 import br.fcv.selenium_webdriver.support.implicits._
+import br.fcv.selenium_webdriver.support.{Empty, Full}
 import org.junit.runner.RunWith
 import org.openqa.selenium.By.{id, name, tagName}
 import org.openqa.selenium.{NoSuchElementException => NoSuchWebElementException, WebDriver, WebElement}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
+import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import org.openqa.selenium.By
 
 @RunWith(classOf[JUnitRunner])
 class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
+    override def createWebDriver = new HtmlUnitDriver    
     private def localPageUrl = getClass.getResource("/test-page.html").toString
     
     test("testing exception message seaching on webdriver") { driver =>
@@ -45,6 +49,7 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     }
     
     test("testing for on empty") { driver =>
+        
         driver get (localPageUrl)
         
         val box = driver \ tagName("body") \ id("main")  \ name("content") \ name("name-not-found")
@@ -53,6 +58,48 @@ class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         	fail("empty box should not excecute for") 
         }
         
+    }
+    
+    test("test filter map and flatMap methods") { driver =>
+        driver get (localPageUrl)
+        
+        val box = driver \ id("body")
+        
+        (for (e <- box if e.getAttribute("class") == "div-class-body") yield e) match {
+            case Empty(_, _) => fail("filter was expected to result in something")
+            case _ => 
+        }
+          
+        (for (e <- box if e.getAttribute("class") == "div-class-body-wrong") yield e) match {
+            case Full(_, _) => fail("filter was expected to result in empty result")
+            case _ => 
+        }
+        
+        (for (e <- box 
+                if e.getAttribute("class") == "div-class-body";
+        			f <- e \ name("content")) yield f) match {
+            case Empty(_, _) => fail("filter was expected to result in something")
+            case _ =>
+        }
+        
+        (for (e <- box 
+                if e.getAttribute("class") == "div-class-body";
+        			f <- e \ By.className("div-class")) yield f) match {
+            case Empty(_, _) => fail("filter was expected to result in something")
+            case _ =>
+        }
+        
+        (for (e <- box if e.getAttribute("class") == "div-class-body";
+        			f <- e \ By.className("div-class") if f.getAttribute("title") == "my-title") yield f) match {
+            case Empty(_, _) => fail("filter was expected to result in something")
+            case _ =>
+        }
+        
+        (for (e <- box if e.getAttribute("class") == "div-class-body";
+        			f <- e \ By.className("div-class") if f.getAttribute("title") == "my_title") yield f) match {
+            case Full(_, _) => fail("filter was expected to result in nothing")
+            case _ =>
+        }
     }
         
 }

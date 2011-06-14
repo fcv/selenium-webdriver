@@ -29,7 +29,13 @@ sealed abstract class ElementBox(path: List[WebElement]) {
     
     def foreach[U](f: WebElement => U) = if (!isEmpty) f(get)
     
-    def getOrElse[B >: WebElement](default: => B) = if (isEmpty) default else get     
+    def getOrElse[B >: WebElement](default: => B) = if (isEmpty) default else get
+    
+    def map(f: WebElement => WebElement): ElementBox = if (isEmpty) this else Full(path, f(get))
+    
+    def filter(predicate: WebElement => Boolean): ElementBox = if (!isEmpty && predicate(get)) this else Empty(path, null)
+    
+    def flatMap(f: WebElement => ElementBox): ElementBox = if (isEmpty) this else f(get)    
     
 }
 
