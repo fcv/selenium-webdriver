@@ -20,7 +20,13 @@ class JsPromptTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         var input = driver \ id("my-input") !
         
         val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-        jsExecutor executeScript { "testJsPrompt();" }
+        jsExecutor executeScript {
+        	"""
+        	var value = prompt('Please, set a value to input text');
+			var i = document.getElementById('my-input');
+			i.value = value; 
+        	"""             
+        }
         
         val alert = driver.switchTo.alert 
         
