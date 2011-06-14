@@ -17,6 +17,6 @@ trait WebDriverFixtureFunSuite extends FixtureFunSuite {
         }
     }
     
-    def createWebDriver = new FirefoxDriver
+    def createWebDriver:WebDriver = new FirefoxDriver
 
 }
