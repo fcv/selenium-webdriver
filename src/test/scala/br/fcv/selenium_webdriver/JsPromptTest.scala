@@ -9,7 +9,7 @@ import org.scalatest.matchers.ShouldMatchers
 import br.fcv.selenium_webdriver.support.implicits._
 
 @RunWith(classOf[JUnitRunner])
-class JsPromptTest extends WebDriverFixtureFunTest with ShouldMatchers {
+class JsPromptTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
     test("send value and retrieve it", List(BrowserType.Firefox)) { driver =>
     

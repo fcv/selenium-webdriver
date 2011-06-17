@@ -10,7 +10,9 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.By
 
 @RunWith(classOf[JUnitRunner])
-class WaitUntilTest extends WebDriverFixtureFunTest with ShouldMatchers {
+class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
+    
+    override val browsers = List(BrowserType.Firefox)
 
     test("testing failure") { driver =>
         
@@ -24,13 +26,13 @@ class WaitUntilTest extends WebDriverFixtureFunTest with ShouldMatchers {
     
     test("testing waiting") { driver =>
         
-        val button = driver \ id("button")        
-        button.click
+        val button = driver \ id("button");        
+        button.click;
         
-        val ul = driver.waitUntil(2000) { d => d \ id("my-ul") ! }
+        val ul = driver.waitUntil(2000) { d => d \ id("my-ul") ! };
         
-        val lis = ul *\ tagName("li")
-        lis.size should be === 10
+        val lis = ul *\ tagName("li");
+        lis.size should be === 10;        
     }
     
 }

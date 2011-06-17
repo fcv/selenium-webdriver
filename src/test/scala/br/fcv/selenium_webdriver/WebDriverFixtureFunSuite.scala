@@ -5,12 +5,12 @@ import org.openqa.selenium.WebDriver
 import org.scalatest.Tag
 import scala.collection.GenTraversable
 
-trait WebDriverFixtureFunTest extends FixtureFunSuite { 
+trait WebDriverFixtureFunSuite extends FixtureFunSuite { 
     
     type FixtureParam = WebDriver
     
     def withFixture(test: OneArgTest) {
-        val browserType = WebDriverFixtureFunTest.decode(test.name)
+        val browserType = WebDriverFixtureFunSuite.decode(test.name)
         
         val driver = BrowserType.newWebDriver( 
                 browserType getOrElse { 
@@ -27,12 +27,12 @@ trait WebDriverFixtureFunTest extends FixtureFunSuite {
     }
     
     protected override def test(testName: String, testTags: Tag*)(testFun: FixtureParam => Any) {
-        this.test(testName, BrowserType.values, testTags: _*)(testFun)
+        this.test(testName, browsers, testTags: _*)(testFun)
     }
     
-    protected def test(testName: String, browsers: GenTraversable[BrowserType.Value], testTags: Tag*)(testFun: FixtureParam => Any) {
-        browsers foreach { b => 
-            super.test(WebDriverFixtureFunTest.encode(testName, b), testTags: _*)(testFun);
+    protected def test(testName: String, browsers: Traversable[BrowserType.Value], testTags: Tag*)(testFun: FixtureParam => Any) {
+        browsers foreach { (b => 
+            super.test(WebDriverFixtureFunSuite.encode(testName, b), testTags: _*)(testFun));
         }
     }
     
@@ -41,10 +41,12 @@ trait WebDriverFixtureFunTest extends FixtureFunSuite {
         val url = this.getClass.getResource("/" + className + "-page.html");
         Some(url) map { _.toString }
     }
+    
+    protected def browsers: Traversable[BrowserType.Value] = BrowserType.values
 
 }
 
-object WebDriverFixtureFunTest {
+object WebDriverFixtureFunSuite {
     
     def encode(testName: String, browser: BrowserType.Value): String = browser.toString + ": " + testName
     
