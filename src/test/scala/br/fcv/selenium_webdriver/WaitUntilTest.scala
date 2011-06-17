@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.By
 
 @RunWith(classOf[JUnitRunner])
-class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
+class WaitUntilTest extends WebDriverFixtureFunTest with ShouldMatchers {
 
     test("testing failure") { driver =>
         

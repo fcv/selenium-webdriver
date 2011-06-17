@@ -1,4 +1,5 @@
-package br.fcv.selenium_webdriver.experimental
+package br.fcv.selenium_webdriver
+
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 

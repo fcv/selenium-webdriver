@@ -11,9 +11,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.By
 
 @RunWith(classOf[JUnitRunner])
-class FindElementTest extends WebDriverFixtureFunSuite with ShouldMatchers {
-    
-    override def createWebDriver = new HtmlUnitDriver
+class FindElementTest extends WebDriverFixtureFunTest with ShouldMatchers {
     
     test("testing exception message seaching on webdriver") { driver =>
         

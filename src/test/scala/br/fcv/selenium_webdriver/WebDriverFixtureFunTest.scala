@@ -1,4 +1,4 @@
-package br.fcv.selenium_webdriver.experimental
+package br.fcv.selenium_webdriver
 
 import org.scalatest.fixture.FixtureFunSuite
 import org.openqa.selenium.WebDriver
