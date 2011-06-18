@@ -51,7 +51,9 @@ sealed abstract class ElementBox(path: List[WebElement]) {
     
     def filter(predicate: WebElement => Boolean): ElementBox = if (!isEmpty && predicate(get)) this else Empty(path, null)
     
-    def flatMap(f: WebElement => ElementBox): ElementBox = if (isEmpty) this else f(get)    
+    def flatMap(f: WebElement => ElementBox): ElementBox = if (isEmpty) this else f(get)
+    
+    def toOption = if (isEmpty) None else Some(get)
     
 }
 

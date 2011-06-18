@@ -8,13 +8,14 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.By
+import br.fcv.selenium_webdriver.support.ElementBox
 
 @RunWith(classOf[JUnitRunner])
 class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
     
     override val browsers = List(BrowserType.Firefox)
 
-    test("testing failure") { driver =>
+    test("failure") { driver =>
         
         val button = driver \ id("button")        
         button.click
@@ -24,7 +25,7 @@ class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         }
     }
     
-    test("testing waiting") { driver =>
+    test("waiting") { driver =>
         
         val button = driver \ id("button");        
         button.click;
@@ -33,6 +34,20 @@ class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         
         val lis = ul *\ tagName("li");
         lis.size should be === 10;        
+    }
+    
+    test("[Own wait impl] waiting") { driver =>
+        val button = driver \ id("button");        
+        button.click;
+        
+        import br.fcv.selenium_webdriver.support.experimental.Waiter   
+        implicit def box2option(box: ElementBox) = box.toOption
+        val wait = new Waiter(500, 4000)
+        
+        val ul = wait until { driver \ id("my-ul") };
+        
+        val lis = ul *\ tagName("li");
+        lis.size should be === 10;
     }
     
 }
