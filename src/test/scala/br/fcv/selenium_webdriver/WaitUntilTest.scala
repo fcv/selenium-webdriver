@@ -1,14 +1,12 @@
 package br.fcv.selenium_webdriver
 
-import org.scalatest.matchers.ShouldMatchers
 import br.fcv.selenium_webdriver.support.implicits._
-import org.openqa.selenium.By.{className, id, name, tagName}
-import org.openqa.selenium.{ NoSuchElementException => NoSuchWebElementException }
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.openqa.selenium.WebElement
-import org.openqa.selenium.By
 import br.fcv.selenium_webdriver.support.ElementBox
+import org.junit.runner.RunWith
+import org.openqa.selenium.By.{className, id, name, tagName}
+import org.openqa.selenium.{By, NoSuchElementException => NoSuchWebElementException, TimeoutException, WebElement}
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
 class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
@@ -48,6 +46,20 @@ class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         
         val lis = ul *\ tagName("li");
         lis.size should be === 10;
+    }
+    
+    test("[Own wait impl] failure by timeout") { driver =>
+        
+        val button = driver \ id("button")        
+        // button.click
+        import br.fcv.selenium_webdriver.support.experimental.Waiter        
+        val wait = new Waiter(50, 1000)
+        
+        val te = intercept[TimeoutException] {            
+        	val ul = wait until { driver \ id("my-ul") }
+        }
+        
+        println(te.getMessage)
     }
     
 }
