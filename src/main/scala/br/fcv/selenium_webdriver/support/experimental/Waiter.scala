@@ -88,5 +88,16 @@ class Waiter(val checkPeriod: Long, val timeout: Long) {
         Thread.sleep(checkPeriod)
     }
     
+}
 
+object Waiter {
+    object TimeImplicits {
+        
+        implicit def enrichLong(i: Long) = new {
+            def miliseconds = i
+            def seconds = i * 1000
+            def minutes = 1 * 1000 * 60
+        }
+        
+    }
 }
