@@ -41,7 +41,7 @@ class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         button.click;
         
         import br.fcv.selenium_webdriver.support.experimental.Waiter   
-        implicit def box2option(box: ElementBox) = box.toOption
+        
         val wait = new Waiter(500, 4000)
         
         val ul = wait until { driver \ id("my-ul") };
