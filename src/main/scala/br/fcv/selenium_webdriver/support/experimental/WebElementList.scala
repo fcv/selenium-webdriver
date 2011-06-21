@@ -15,6 +15,7 @@ class WebElementList private (delegate: List[WebElement]) extends IndexedSeq[Web
     override def newBuilder: Builder[WebElement, WebElementList] = WebElementList.newBuilder
     
     def *\ (by: By) = this.flatMap( e => (e findElements by).toList )
+
 }
 
 object WebElementList {
