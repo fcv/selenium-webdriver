@@ -23,6 +23,7 @@ import scala.collection.JavaConversions._
  * 
  */
 sealed abstract class ElementBox(path: List[WebElement]) {
+    self =>
     
     def get: WebElement
     def isEmpty: Boolean
@@ -50,6 +51,15 @@ sealed abstract class ElementBox(path: List[WebElement]) {
     def map(f: WebElement => WebElement): ElementBox = if (isEmpty) this else Full(path, f(get))
     
     def filter(predicate: WebElement => Boolean): ElementBox = if (!isEmpty && predicate(get)) this else Empty(path, null)
+    
+    def withFilter(predicate: WebElement => Boolean): WithFilter = new WithFilter(predicate)
+    
+    class WithFilter(p: WebElement => Boolean) {
+    	def map[B](f: WebElement => WebElement): ElementBox = self filter p map f
+    	def flatMap[B](f: WebElement => ElementBox): ElementBox = self filter p flatMap f
+    	def foreach[U](f: WebElement => U): Unit = self filter p foreach f
+    	def withFilter(q: WebElement => Boolean): WithFilter = new WithFilter(x => p(x) && q(x))
+    }
     
     def flatMap(f: WebElement => ElementBox): ElementBox = if (isEmpty) this else f(get)
     
