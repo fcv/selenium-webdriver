@@ -54,7 +54,7 @@ class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         // button.click
         import br.fcv.selenium_webdriver.support.experimental.Waiter   
         import br.fcv.selenium_webdriver.support.experimental.Waiter.TimeImplicits._
-        val wait = new Waiter(50 miliseconds, 2 seconds)
+        val wait = new Waiter(checkPeriod = 50 miliseconds, timeout = 2 seconds)
         
         intercept[TimeoutException] {            
         	val ul = wait until { driver \ id("my-ul") }
