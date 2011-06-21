@@ -14,7 +14,7 @@ package object support {
             private def elm = box !
             def click = elm click
             def submit = elm submit
-            @deprecated
+            @deprecated("look at selenium docs", "look at selenium docs")
             def getValue = elm getValue
             def sendKeys(keysToSend: CharSequence*) = elm sendKeys (keysToSend: _*);
             def clear = elm clear
