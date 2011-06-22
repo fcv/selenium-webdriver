@@ -8,13 +8,10 @@ import br.fcv.selenium_webdriver.support.ElementBox
  * 
  * Main motivation points are:
  * <ul>
- * 	<li>Misleading name. WebDriverWait is not a WebDriver</li>
- * 
- * <li>Don't see why check function receives a WebDriver instance as parameter. It is normally accessible as a outer variable.</li>
- * 
- * <li>Rules for result of check function are confusing </li>
- * 
- * <li>Make use of concise scala syntax </li>
+ * 	<li>Misleading name. WebDriverWait is not a WebDriver</li> 
+ *  <li>Don't see why check function receives a WebDriver instance as parameter. It is normally accessible as a outer variable.</li> 
+ *  <li>Rules for result of check function are confusing </li> 
+ *  <li>Make use of concise scala syntax </li>
  * </ul>
  * 
  * Usage example:
