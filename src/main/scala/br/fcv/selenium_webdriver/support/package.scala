@@ -13,9 +13,7 @@ package object support {
         implicit def box2element(box: ElementBox) = new WebElement {
             private def elm = box !
             def click = elm click
-            def submit = elm submit
-            @deprecated("look at selenium docs", "look at selenium docs")
-            def getValue = elm getValue
+            def submit = elm submit            
             def sendKeys(keysToSend: CharSequence*) = elm sendKeys (keysToSend: _*);
             def clear = elm clear
             def getTagName = elm getTagName;
