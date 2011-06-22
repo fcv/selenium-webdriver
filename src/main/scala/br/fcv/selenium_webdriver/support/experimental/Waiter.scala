@@ -4,16 +4,61 @@ import org.openqa.selenium.{TimeoutException, WebElement}
 import br.fcv.selenium_webdriver.support.ElementBox
 
 /**
- * Experimental replacement for WebDriverWait
+ * Experimental replacement for WebDriverWait.
+ * 
+ * Main motivation points are:
+ * <ul>
+ * 	<li>Misleading name. WebDriverWait is not a WebDriver</li>
+ * 
+ * <li>Don't see why check function receives a WebDriver instance as parameter. It is normally accessible as a outer variable.</li>
+ * 
+ * <li>Rules for result of check function are confusing </li>
+ * 
+ * <li>Make use of concise scala syntax </li>
+ * </ul>
+ * 
+ * Usage example:
+ * 
+ * {{{
+ * val driver = createWebDriver()
+ * val wait = new Waiter(checkPeriod = 50, timeout = 2000)
+ * 
+ * //- if implicts converstion are available .. returning ElementBox
+ * val myId: WebElement = wait until { driver \ By.id("my-id") }
+ * myId.click
+ * 
+ * //- or using orignal webdriver methods .. returning Option[WebElement] 
+ * val anotherId: WebElement = wait until {
+ *   // note that unlike WebDriverWait this implementation does not swallow any exception
+ *   try {
+ *   	Some( driver findElement By.id("another-id") )
+ *   } catch {
+ *   	case e: NoSuchElementException => None
+ *   }
+ * }
+ * anotherId.click
+ * 
+ * // .. returning boolean
+ * wait until { (driver findElements By.className("classname")).size > 4 }
+ * // there are more than 4 'classname' elements 
+ * }}} 
  * 
  */
 class Waiter(val checkPeriod: Long, val timeout: Long) {
     
+    /**
+     * Adapter type created so several overload of until method 
+     * can use same background implementation: untilImpl
+     */
     private trait InternalResult[+T] {
         def hasResult: Boolean
         def extractResult: T
     }
     
+    /**
+     * Empty instance of InternalResult. It is for InternalResult as [[scala.None]] is for 
+     * [[scala.Option]] and [[scala.Nil]] is for [[scala.List]].
+     */
     private object NoResult extends InternalResult[Nothing] {
         override val hasResult = false
         override def extractResult = throw new IllegalStateException("NoResult")
