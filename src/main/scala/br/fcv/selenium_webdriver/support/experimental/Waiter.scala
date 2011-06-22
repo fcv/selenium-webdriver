@@ -63,15 +63,27 @@ class Waiter(val checkPeriod: Long, val timeout: Long) {
     
     private def untilImpl[T](check: => InternalResult[T]): T = {
         
-        val now: Long = System.currentTimeMillis
-        val maximumTime = now + timeout
+        import System.currentTimeMillis
+        val maximumTime = currentTimeMillis + timeout
         
         var option: InternalResult[T] = NoResult
-        while (!option.hasResult && System.currentTimeMillis < maximumTime) {
+        //-- repeat while check has not a success result and timeout has not been reached
+        while (!option.hasResult && currentTimeMillis < maximumTime) {
             option = check            
             
-            if (!option.hasResult)
-                sleep
+            if (!option.hasResult) {
+                val now = currentTimeMillis
+                //-- verify if current time more check period won't be before timeout 
+                val sleepTime = if (now + checkPeriod < maximumTime) {
+	                    checkPeriod
+	                } else {
+	                    //-- if so, just use remaining time.. not entire period
+	                	maximumTime - now
+	                }
+                
+                if (sleepTime >= 0)
+                	Thread.sleep(sleepTime)
+            }
         }
         
         if (option.hasResult)

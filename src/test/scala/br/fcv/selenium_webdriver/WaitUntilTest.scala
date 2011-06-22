@@ -61,4 +61,24 @@ class WaitUntilTest extends WebDriverFixtureFunSuite with ShouldMatchers {
         }
     }
     
+    test("[Own wait impl] don't wait too much") { driver =>
+        
+        val button = driver \ id("button")        
+        // button.click -- do not click 
+        import br.fcv.selenium_webdriver.support.experimental.Waiter   
+        import br.fcv.selenium_webdriver.support.experimental.Waiter.TimeImplicits._
+        val wait = new Waiter(checkPeriod = 3 seconds, timeout = 1 seconds)
+        
+        import System.currentTimeMillis
+        
+        val start = currentTimeMillis
+        
+        intercept[TimeoutException] {            
+        	val ul = wait until { driver \ id("my-ul") }
+        }
+        val timeEllapsed = currentTimeMillis - start
+        
+        timeEllapsed should (be >= (1000L) and be < (1500L))
+    }
+    
 }
