@@ -2,6 +2,7 @@ package br.fcv.selenium_webdriver.support
 
 import org.openqa.selenium.{By, NoSuchElementException => NoSuchWebElementException, SearchContext, WebElement}
 import scala.collection.JavaConversions._
+import experimental.WebElementList
 
 abstract class RichSearchContext(context: SearchContext) {
     
@@ -13,7 +14,7 @@ abstract class RichSearchContext(context: SearchContext) {
 		}
 	}
 	
-	def *\ (by: By): List[WebElement] = (context findElements by).toList 
+	def *\ (by: By): WebElementList = WebElementList((context findElements by).toList: _*) 
 	
 	protected def root: List[WebElement] 
 
