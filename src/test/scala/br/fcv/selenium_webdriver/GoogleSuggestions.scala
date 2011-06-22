@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver
 import org.scalatest.fixture.FixtureFunSuite
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.By
-import org.openqa.selenium.RenderedWebElement
 
 import scala.collection.JavaConversions._
 import util.control.Breaks._
