@@ -94,11 +94,7 @@ class Waiter(val checkPeriod: Long, val timeout: Long) {
     
     protected def throwTimeoutException(): Nothing = {
         throw new TimeoutException("Operation timed out after waiting %s miliseconds".format(timeout))
-    }
-    
-    protected def sleep: Unit = {
-        Thread.sleep(checkPeriod)
-    }
+    }    
     
 }
 
