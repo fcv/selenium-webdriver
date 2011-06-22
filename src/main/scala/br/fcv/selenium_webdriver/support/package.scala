@@ -7,8 +7,8 @@ import org.openqa.selenium.By
 package object support {
 
     object implicits {
-        implicit def enrichWebElement(element: WebElement) = new RichWebElement(element);
-        implicit def enrichWebDriver(driver: WebDriver) = new RichWebDriver(driver);
+        implicit def enrichWebElement(element: WebElement): RichWebElement = new RichWebElement(element);
+        implicit def enrichWebDriver(driver: WebDriver): RichWebDriver = new RichWebDriver(driver);
 
         implicit def box2element(box: ElementBox): WebElement = box.get
     }
