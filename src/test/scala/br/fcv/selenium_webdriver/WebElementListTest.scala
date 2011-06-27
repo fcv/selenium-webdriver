@@ -28,4 +28,15 @@ class WebElementListTest extends WebDriverFixtureFunSuite with ShouldMatchers {
 
     private def isEven(i: Int) = i % 2 == 0
     
+    test("using for comprehension") { driver =>
+        
+        val mains = driver *\ By.className("main")
+        
+        val lis = for (main <- mains; 
+        		h1 <- main *\ By.tagName("h1") if (h1.getText == "high");
+        		li <- main *\ By.tagName("li")) yield li.getText.toInt 
+        
+        lis should be === (List(6, 7, 8, 9, 10))
+    }
+    
 }
