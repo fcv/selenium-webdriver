@@ -3,8 +3,10 @@ package br.fcv.selenium_webdriver.support
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.{ NoSuchElementException => NoSuchWebElementException }
 import org.openqa.selenium.By
-
 import scala.collection.JavaConversions._
+import scala.collection.generic.CanBuildFrom
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.Builder
 
 /** 
  * Abstraction very similar to [[scala.Option]] but this implementation
@@ -48,15 +50,20 @@ sealed abstract class ElementBox(path: List[WebElement]) {
     
     def getOrElse[B >: WebElement](default: => B) = if (isEmpty) default else get
     
-    def map(f: WebElement => WebElement): ElementBox = if (isEmpty) this else Full(path, f(get))
+    def map[T, That](f: WebElement => T)(implicit bf: CanBuildFrom[ElementBox, T, That]): That = {
+        val b = bf(this)
+        b.sizeHint( if (isEmpty) 0 else 1 )
+        for (x <- this) b += f(x)
+        b.result
+    }
     
     def filter(predicate: WebElement => Boolean): ElementBox = if (!isEmpty && predicate(get)) this else Empty(path, null)
     
     def withFilter(predicate: WebElement => Boolean): WithFilter = new WithFilter(predicate)
     
     class WithFilter(p: WebElement => Boolean) {
-    	def map[B](f: WebElement => WebElement): ElementBox = self filter p map f
-    	def flatMap[B](f: WebElement => ElementBox): ElementBox = self filter p flatMap f
+    	def map[T, That](f: WebElement => T)(implicit bf: CanBuildFrom[ElementBox, T, That]): That = self.filter(p).map(f)(bf)
+    	def flatMap(f: WebElement => ElementBox): ElementBox = self filter p flatMap f
     	def foreach[U](f: WebElement => U): Unit = self filter p foreach f
     	def withFilter(q: WebElement => Boolean): WithFilter = new WithFilter(x => p(x) && q(x))
     }
@@ -65,7 +72,34 @@ sealed abstract class ElementBox(path: List[WebElement]) {
     
     def toOption = if (isEmpty) None else Some(get)
     
+    def toList = if (isEmpty) List(get) else Nil
+    
 }
+
+object ElementBox extends LowerPriorityImplicits {
+    private def newElementBoxBuilder: Builder[WebElement, ElementBox] = new ArrayBuffer[WebElement] mapResult { 
+        seq => if (seq.isEmpty) Empty(Nil, null) else Full(Nil, seq.head)
+    }
+    
+    implicit def toElementBox: CanBuildFrom[ElementBox, WebElement, ElementBox] = new CanBuildFrom[ElementBox, WebElement, ElementBox] {
+    	def apply = newElementBoxBuilder
+    	def apply(elmBox: ElementBox) = newElementBoxBuilder
+    }
+    
+    implicit def toIterable(box: ElementBox): Iterable[WebElement] = box.toList
+}
+
+trait LowerPriorityImplicits {
+	private def newOptionBoxBuilder[T]: Builder[T, Option[T]] = new ArrayBuffer[T] mapResult {
+        seq => if (seq.isEmpty) None else Some(seq.head)
+    }
+  
+	implicit def toOption[T]: CanBuildFrom[ElementBox, T, Option[T]] = new CanBuildFrom[ElementBox, T, Option[T]] {
+        def apply = newOptionBoxBuilder[T]
+        def apply(elmBox: ElementBox) = newOptionBoxBuilder[T] 
+    }
+}
+
 
 /**
  * Represents an empty [[br.fcv.selenium_webdriver.support.ElementBox]]
