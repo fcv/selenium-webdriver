@@ -10,7 +10,7 @@ import org.scalatest.matchers.ShouldMatchers
 import br.fcv.selenium_webdriver.support.experimental.{JQuery => $}
 
 @RunWith(classOf[JUnitRunner])
-class JQuerySelector extends WebDriverFixtureFunSuite with ShouldMatchers {
+class JQuerySelectorTest extends WebDriverFixtureFunSuite with ShouldMatchers {
 
     override val browsers = List(BrowserType.Firefox)
     
