@@ -11,9 +11,16 @@ import grizzled.slf4j.Logging
  * 
  * Specific kind of By that uses jquery to select elements.
  * 
- * At this time target (tested) page is required to contain jquery js
- * file. A good improvement would be to automatically append it when
- * it is not present.
+ * Usage:
+ * {{{
+ * // ...
+ * import br.fcv.selenium_webdriver.support.experimental.{JQuery => $}
+ * import java.util.{List => JList}
+ * // ...
+ * var webdriver = getWebDriver
+ * var elements: JList[WebElement] = webdriver findElements ($("#id-selector").find(".class-selector"))
+ * // ...
+ * }}}
  * 
  */
 class JQuery(expression: String) extends By with Logging {
@@ -34,10 +41,10 @@ class JQuery(expression: String) extends By with Logging {
     		        if (result == null) "null" else result.getClass.getName))
 
     		//-- if result is a boolean it means that jquery was not present
-    		if (result.isInstanceOf[Boolean])
-    		    None
-		    else 
-		        Some(result.asInstanceOf[JList[WebElement]])    		
+            if (result.isInstanceOf[Boolean])
+                None
+            else 
+                Some(result.asInstanceOf[JList[WebElement]])    		
     	}
     }
     
@@ -70,6 +77,6 @@ object JQuery {
     		} else {
     			return false;
     		}
-    	"""
+            """;
     
 }
