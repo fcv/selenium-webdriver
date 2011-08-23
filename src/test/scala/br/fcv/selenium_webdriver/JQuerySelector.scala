@@ -3,7 +3,6 @@ package br.fcv.selenium_webdriver
 import scala.collection.JavaConversions.asScalaBuffer
 
 import org.junit.runner.RunWith
-import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.{NoSuchElementException => NoSuchWebElementException}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
