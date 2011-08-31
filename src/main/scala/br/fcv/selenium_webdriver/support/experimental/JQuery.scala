@@ -1,16 +1,18 @@
 package br.fcv.selenium_webdriver.support.experimental
 
-import org.openqa.selenium.By
 import java.util.{List => JList}
+
+import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.SearchContext
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.JavascriptExecutor
+
 import grizzled.slf4j.Logging
 
 /**
- * 
+ *
  * Specific kind of By that uses jquery to select elements.
- * 
+ *
  * Usage:
  * {{{
  * // ...
@@ -21,7 +23,7 @@ import grizzled.slf4j.Logging
  * var elements: JList[WebElement] = webdriver findElements ($("#id-selector").find(".class-selector"))
  * // ...
  * }}}
- * 
+ *
  */
 class JQuery(expression: String) extends By with Logging {
 
@@ -29,37 +31,37 @@ class JQuery(expression: String) extends By with Logging {
 
     def findElements(context: SearchContext): JList[WebElement] = {
         debug("entering JQuery.findElements")
-    	val wait = new Waiter(checkPeriod = 500, timeout = 4000)
-    	
-    	val jsExecutor = context.asInstanceOf[JavascriptExecutor];
-    	
-        wait until {
-    		val result = (jsExecutor executeScript JQuery.expressiontWithJQueryCheck(expression))
-    		debug("jquery selector '%s' returned %s of type %s ".format(
-    		        expression, 
-    		        result, 
-    		        if (result == null) "null" else result.getClass.getName))
+        val wait = new Waiter(checkPeriod = 500, timeout = 4000)
 
-    		//-- if result is a boolean it means that jquery was not present
+        val jsExecutor = context.asInstanceOf[JavascriptExecutor];
+
+        wait until {
+            val result = (jsExecutor executeScript JQuery.expressiontWithJQueryCheck(expression))
+            debug("jquery selector '%s' returned %s of type %s ".format(
+                expression,
+                result,
+                if (result == null) "null" else result.getClass.getName))
+
+            //-- if result is a boolean it means that jquery was not present
             if (result.isInstanceOf[Boolean])
                 None
-            else 
-                Some(result.asInstanceOf[JList[WebElement]])    		
-    	}
+            else
+                Some(result.asInstanceOf[JList[WebElement]])
+        }
     }
-    
+
     //-- TODO: escape javascript quotes
     def find(selector: String) = new JQuery(expression + ".find('" + selector + "')");
-    
+
     override val toString = expression
 
 }
 
 object JQuery {
-    
+
     //-- TODO: escape javascript quotes
-    def apply(selector: String) = new JQuery( "jQuery('" + selector + "')" ); 
-    
+    def apply(selector: String) = new JQuery("jQuery('" + selector + "')");
+
     //-- TODO: define a way to parameterize jquery source
     private def expressiontWithJQueryCheck(expression: String) = """
     		var idNewScript = 'jQuery-selenium-by-test';
@@ -78,5 +80,5 @@ object JQuery {
     			return false;
     		}
             """;
-    
+
 }
