@@ -10,3 +10,4 @@ build
 .project
 .manager
 .scala_dependencies
+.cache
